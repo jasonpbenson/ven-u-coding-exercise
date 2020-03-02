@@ -1,24 +1,34 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { globalHistory } from "@reach/router";
+
+import "./App.css";
+
+import LoginForm from "./Pages/LoginForm";
+import Layout from "./Components/Layout";
+import TopStoriesResults from "./Pages/TopStories";
+import SavedStories from "./Pages/SavedStories";
 
 function App() {
+  const [location, setLocation] = useState("/");
+
+  useEffect(() => {
+    globalHistory.listen(({ location }) => {
+      return setLocation(location.pathname);
+    });
+  }, [location]);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Router>
+        <Switch>
+          <Route exact path="/" component={LoginForm} />
+          <Layout location={location}>
+            <Route exact path="/search-results" component={TopStoriesResults} />
+            <Route exact path="/saved-stories" component={SavedStories} />
+          </Layout>
+        </Switch>
+      </Router>
     </div>
   );
 }
