@@ -6,6 +6,8 @@
 
 `npm install`
 
+`npm start`
+
 - Login form validates name & email
 - API automatically fires on component load and returns top 12 Hacker News stories
 - Stories can be saved
