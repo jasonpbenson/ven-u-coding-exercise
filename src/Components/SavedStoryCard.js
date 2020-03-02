@@ -4,7 +4,6 @@ import styled from "styled-components";
 import Button from "./Button";
 
 import LinkIcon from "../Assets/link-icon.svg";
-import RemoveIcon from "../Assets/remove-button.svg";
 
 const StyledSavedStoryCard = styled.div`
   align-items: center;

@@ -35,6 +35,7 @@ const FormStyles = styled.form`
   flex-direction: column;
   height: 80%;
   justify-content: flex-start;
+  min-width: 384px;
   max-width: 752px;
   padding: 2%;
   width: 40%;
@@ -48,7 +49,7 @@ const FormStyles = styled.form`
     height: fit-content;
     justify-content: flex-start;
     margin: 2% 0 4% 0;
-    width: 90%;
+    width: 100%;
   }
   .form-intro .logo {
     height: 48px;
@@ -59,6 +60,7 @@ const FormStyles = styled.form`
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
+    margin-top: 16px;
     position: relative;
     width: 70%;
   }
@@ -93,39 +95,57 @@ const FormStyles = styled.form`
     display: flex;
     font-style: italic;
     height: 24px;
-    left: 24rem;
+    left: 80%;
     padding: 8px;
     position: absolute;
-    top: 2.5rem;
+    top: -8px;
     width: fit-content;
   }
   .form-section .error-message-container p {
     margin: 0;
+    white-space: nowrap;
   }
   .form-section .error-message-container p::before {
     content: "";
     position: absolute;
-    right: 100%;
-    top: 12px;
+    top: 40px;
+    left: 16px;
     width: 0;
     height: 0;
     border-top: 8px solid transparent;
     border-right: 16px solid #f86900;
     border-bottom: 8px solid transparent;
+    transform: rotate(-90deg);
+  }
+  .form-button {
+    margin-top: 16px;
+  }
+  @media (max-width: 765px) {
+    .form-intro .logo {
+      height: 40px;
+    }
+    .form-intro h3 {
+      font-size: 16px;
+    }
+  }
+  @media (max-width: 490px) {
+    height: 100%;
+    justify-content: center;
+    width: 100%;
+
+    .form-section .error-message-container {
+      left: 50%;
+    }
   }
 `;
 
 const EntryForm = () => {
   const [redirect, setRedirect] = useState(false);
-
   const { register, handleSubmit, errors } = useForm();
 
   const onSubmit = data => {
-    console.log("data", data);
     setRedirect(true);
   };
-
-  console.log(redirect);
 
   return (
     <FormContainer>
@@ -146,8 +166,7 @@ const EntryForm = () => {
                 name="firstName"
                 ref={register({
                   required: true,
-                  minLength: 2,
-                  pattern: /[a-zA-Z]/
+                  minLength: 2
                 })}
                 autoFocus
               />
@@ -160,19 +179,7 @@ const EntryForm = () => {
                     className="error-flag"
                   />
                   <div className="error-message-container">
-                    <p>Name must be at least 2 characters</p>
-                  </div>
-                </>
-              )}
-              {errors.firstName && errors.firstName.type === "pattern" && (
-                <>
-                  <img
-                    src={ErrorFlag}
-                    alt="input error icon"
-                    className="error-flag"
-                  />
-                  <div className="error-message-container">
-                    <p>Only use characters aA-zZ</p>
+                    <p>At least 2 characters</p>
                   </div>
                 </>
               )}
@@ -184,7 +191,7 @@ const EntryForm = () => {
                     className="error-flag"
                   />
                   <div className="error-message-container">
-                    <p>Your input is required</p>
+                    <p>Required Field</p>
                   </div>
                 </>
               )}
@@ -195,8 +202,7 @@ const EntryForm = () => {
                 name="lastName"
                 ref={register({
                   required: true,
-                  minLength: 2,
-                  pattern: /[a-zA-Z]/
+                  minLength: 2
                 })}
               />
 
@@ -208,7 +214,7 @@ const EntryForm = () => {
                     className="error-flag"
                   />
                   <div className="error-message-container">
-                    <p>Your input is required</p>
+                    <p>Required Field</p>
                   </div>
                 </>
               )}
@@ -220,14 +226,9 @@ const EntryForm = () => {
                     className="error-flag"
                   />
                   <div className="error-message-container">
-                    <p>Name must be at least 2 characters</p>
+                    <p>At least 2 characters</p>
                   </div>
                 </>
-              )}
-              {errors.lastName && errors.lastName.type === "pattern" && (
-                <div className="error-message-container">
-                  <p>Only use characters aA-zZ</p>
-                </div>
               )}
             </div>
             <div className="form-section">
@@ -261,12 +262,16 @@ const EntryForm = () => {
                     className="error-flag"
                   />
                   <div className="error-message-container">
-                    <p>Please enter valid email address</p>
+                    <p>Please use valid email</p>
                   </div>
                 </>
               )}
             </div>
-            <Button type="submit" label="submit"></Button>
+            <Button
+              className="form-button"
+              type="submit"
+              label="submit"
+            ></Button>
           </div>
         </FormStyles>
       ) : (

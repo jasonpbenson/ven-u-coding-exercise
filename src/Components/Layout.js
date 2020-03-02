@@ -33,7 +33,8 @@ const LayoutStyles = styled.div`
 
 const Layout = props => {
   const [apiData, setApiData] = useState([]);
-  const [isSaved, setIsSaved] = useState([]);
+  // use custom hook to store saved stories in localstorage
+  const [isSaved, setIsSaved] = useLocalStorage("isSaved", []);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
 
@@ -42,8 +43,6 @@ const Layout = props => {
     for (let i = 0; i < apiData.length - 1; i++) {
       if (apiData[i].id === id) {
         apiData[i].isSaved = true;
-        console.log("saveStory id: ", apiData[i].id);
-        console.log("saveStory isSaved: ", apiData[i].isSaved);
         isSaved.push(apiData[i]);
         setIsSaved(isSaved => [...isSaved]);
       }
@@ -52,19 +51,14 @@ const Layout = props => {
 
   const removeStory = event => {
     let id = parseInt(event.target.id);
-    console.log(id);
     for (let i = 0; i < apiData.length - 1; i++) {
       if (apiData[i].id === id) {
         apiData[i].isSaved = false;
-        console.log("removeStory id: ", apiData[i].id);
-        console.log("removeStory isSaved: ", apiData[i].isSaved);
       }
     }
     const element = event.target.parentElement;
     isSaved.splice(element, 1);
     setIsSaved(isSaved => [...isSaved]);
-    // console.log("removeStory: ", isSaved);
-    // console.log(apiData);
   };
 
   const topStoriesApi =
@@ -101,7 +95,8 @@ const Layout = props => {
     setTimeout(() => {
       setIsLoading(false);
     }, 1500);
-  }, []);
+    console.log("request fired");
+  }, [setApiData]);
 
   return (
     <LayoutStyles>
